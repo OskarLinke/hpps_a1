@@ -1,0 +1,3 @@
+struct bits8(){
+}
+
