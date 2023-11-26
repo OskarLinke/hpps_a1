@@ -16,12 +16,6 @@ struct bits8{
     struct bit b7;
 }; 
 
-struct bits8 bits8_from_int(unsigned int x){
-    struct bits8 b; 
-    //do something 
-
-    return b
-};
 
 unsigned int bits8_to_int(struct bits8 x){
     //Opretter vores integer som til sidst skal returneres
@@ -37,8 +31,10 @@ void bits8_print(struct bits8 v){
     printf("%d,%d,%d,%d,%d,%d,%d,%d \n", bit_to_int(v.b7), bit_to_int(v.b6), bit_to_int(v.b5), bit_to_int(v.b4), bit_to_int(v.b3), bit_to_int(v.b2), bit_to_int(v.b1), bit_to_int(v.b0));
 };
 
-struct bits8 bits8_from_int(unsigned int x) { //Takes the integer 
-    assert(x <= 255u);
+
+struct bits8 bits8_from_int(unsigned int x) {
+    // Converts an integer x to a bits8
+    assert(x <= 255u); // Check for max allowed value of integer
     
     struct bits8 bits;
     bits.b7 = bit_from_int(x / 128);
