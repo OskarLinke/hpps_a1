@@ -73,37 +73,37 @@ struct add_result bit_add (struct bit x, struct bit y, struct bit c) {
 }
 
 struct bits8 bits8_add (struct bits8 x, struct bits8 y) {
-    struct bits8 calc;
+    struct bits8 result;
     struct bit c;
     c.v = false;
     
     //første iteration
-    calc.b0 = bit_add(x.b0,y.b0,c).s; 
+    result.b0 = bit_add(x.b0,y.b0,c).s; 
     c = bit_add(x.b0,y.b0,c).c;
 
-    calc.b1 = bit_add(x.b1, y.b1, c).s;
+    result.b1 = bit_add(x.b1, y.b1, c).s;
     c = bit_add(x.b1,y.b1,c).c;
 
-    calc.b2 = bit_add(x.b2, y.b2, c).s;
+    result.b2 = bit_add(x.b2, y.b2, c).s;
     c = bit_add(x.b2,y.b2,c).c;
 
-    calc.b3 = bit_add(x.b3, y.b3, c).s;
+    result.b3 = bit_add(x.b3, y.b3, c).s;
     c = bit_add(x.b3,y.b3,c).c;
 
-    calc.b4 = bit_add(x.b4, y.b4, c).s;
+    result.b4 = bit_add(x.b4, y.b4, c).s;
     c = bit_add(x.b4,y.b4,c).c;
 
-    calc.b5 = bit_add(x.b5, y.b5, c).s;
+    result.b5 = bit_add(x.b5, y.b5, c).s;
     c = bit_add(x.b5,y.b5,c).c;
 
-    calc.b6 = bit_add(x.b6, y.b6, c).s;
+    result.b6 = bit_add(x.b6, y.b6, c).s;
     c = bit_add(x.b6,y.b6,c).c;
 
-    calc.b7 = bit_add(x.b7, y.b7, c).s;
+    result.b7 = bit_add(x.b7, y.b7, c).s;
     c = bit_add(x.b7,y.b7,c).c;
     assert(c.v == bit_from_int(0).v);
 
-    return calc;
+    return result;
 }
 
 struct bits8 bits8_negate(struct bits8 x) {
@@ -119,6 +119,21 @@ struct bits8 bits8_negate(struct bits8 x) {
     result.b7 = bit_not(x.b7);
 
     result = bits8_add(result, bits8_from_int(1)); // add 1 to result
+
+    return result;
+}
+
+struct bits8 bits8_mul(struct bits8 x, struct bits8 y) {
+    struct bits8 result; // instantiate result bits8
+
+    result = bits8_from_int(bits8_to_int(x) * bit_to_int(y.b0));
+    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<1) * bit_to_int(y.b1)));
+    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<2) * bit_to_int(y.b2)));
+    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<3) * bit_to_int(y.b3)));
+    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<4) * bit_to_int(y.b4)));
+    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<5) * bit_to_int(y.b5)));
+    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<6) * bit_to_int(y.b6)));
+    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<7) * bit_to_int(y.b7)));
 
     return result;
 }
