@@ -1,4 +1,7 @@
 CFLAGS?=-std=c11 -Wall -Werror -Wextra -pedantic -g
 
 test_numbers: test_numbers.c
-  $(CC) -o test_numbers test_numbers.c $(CFLAGS)
+  gcc -o test_numbers test_numbers.c $(CFLAGS)
+
+test_bits: test_bits.c
+  gcc -o test_bits test_bits.c $(CFLAGS)
