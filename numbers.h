@@ -71,6 +71,28 @@ struct add_result bit_add (struct bit x, struct bit y, struct bit c) {
                 bit_and(y,c)));
     return result;
 }
+//returns x if b.v = true, and returns <00000000> if b.v = false
+struct bits8 bits8_and_bit(struct bits8 x, struct bit b){
+    struct bits8 result; 
+    result.b0 = bit_and(x.b0, b);
+    result.b1 = bit_and(x.b1, b);
+    result.b2 = bit_and(x.b2, b);
+    result.b3 = bit_and(x.b3, b);
+    result.b4 = bit_and(x.b4, b);
+    result.b5 = bit_and(x.b5, b);
+    result.b6 = bit_and(x.b6, b);
+    result.b7 = bit_and(x.b7, b);
+    return result; 
+}
+
+//Leftshifts the bits8 by however much a is
+struct bits8 bits8_leftshit(struct bits8 b, unsigned int a){
+    assert(a < 8); 
+    
+    struct bits8 result = bits8_from_int(bits8_to_int(b) << a); 
+    return result; 
+
+}
 
 struct bits8 bits8_add (struct bits8 x, struct bits8 y) {
     struct bits8 result;
@@ -118,7 +140,7 @@ struct bits8 bits8_negate(struct bits8 x) {
     result.b6 = bit_not(x.b6);
     result.b7 = bit_not(x.b7);
 
-    result = bits8_add(result, bits8_from_int(1)); // add 1 to result
+    result = bits8_add(result, bits8_from_int(1u)); // add 1 to result
 
     return result;
 }
@@ -126,14 +148,14 @@ struct bits8 bits8_negate(struct bits8 x) {
 struct bits8 bits8_mul(struct bits8 x, struct bits8 y) {
     struct bits8 result; // instantiate result bits8
 
-    result = bits8_from_int(bits8_to_int(x) * bit_to_int(y.b0));
-    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<1) * bit_to_int(y.b1)));
-    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<2) * bit_to_int(y.b2)));
-    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<3) * bit_to_int(y.b3)));
-    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<4) * bit_to_int(y.b4)));
-    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<5) * bit_to_int(y.b5)));
-    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<6) * bit_to_int(y.b6)));
-    result = bits8_add(result, bits8_from_int((bits8_to_int(x)<<7) * bit_to_int(y.b7)));
-
+    result = bits8_and_bit(x,y.b0);
+    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,1) ,y.b1));
+    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,2) ,y.b2));
+    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,3) ,y.b3));
+    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,4) ,y.b4));
+    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,5) ,y.b5));
+    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,6) ,y.b6));
+    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,7) ,y.b7));
     return result;
 }
+
