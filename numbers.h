@@ -28,7 +28,7 @@ unsigned int bits8_to_int(struct bits8 x){
 
 void bits8_print(struct bits8 v){ 
     //Kalder for hver bit i bits8 bit_to_int fra bits.h, som returnerer 1 hvis den er true, og 0 hvis den er false. 
-    printf("<%d,%d,%d,%d,%d,%d,%d,%d> \n", bit_to_int(v.b7), bit_to_int(v.b6), bit_to_int(v.b5), bit_to_int(v.b4), bit_to_int(v.b3), bit_to_int(v.b2), bit_to_int(v.b1), bit_to_int(v.b0));
+    printf("<""%d""%d""%d""%d""%d""%d""%d""%d"">\n", bit_to_int(v.b7), bit_to_int(v.b6), bit_to_int(v.b5), bit_to_int(v.b4), bit_to_int(v.b3), bit_to_int(v.b2), bit_to_int(v.b1), bit_to_int(v.b0));
 };
 
 
@@ -85,14 +85,42 @@ struct bits8 bits8_and_bit(struct bits8 x, struct bit b){
     return result; 
 }
 
-//Leftshifts the bits8 by however much a is
-//Skal ændres så den altid leftshifter med 1, og skal ikke regne om til integers. 
-struct bits8 bits8_leftshit(struct bits8 b, unsigned int a){
-    assert(a < 8); 
-    
-    struct bits8 result = bits8_from_int(bits8_to_int(b) << a); 
-    return result; 
+//Rightshifts (not arrithmetic) by 1
+struct bits8 bits8_rightshift(struct bits8 b){
+    //laver den bit der skal 'shiftes ind' på most significants plads
+    struct bit new_significant;
+    new_significant.v = false;
+    //assign the values to the new bit vector
+    struct bits8 result;
+    result.b7 = new_significant;
+    result.b6 = b.b7;
+    result.b5 = b.b6;
+    result.b4 = b.b5;
+    result.b3 = b.b4;
+    result.b2 = b.b3;
+    result.b1 = b.b2;
+    result.b0 = b.b1;
 
+    return result;
+}
+
+//Leftshifts the bits8 by 1
+struct bits8 bits8_leftshift(struct bits8 b) {
+    //appended 0 bit
+    struct bit new_bit;
+    new_bit.v = false;
+    //assign the values to the new bit vector
+    struct bits8 result;
+    result.b7 = b.b6;
+    result.b6 = b.b5;
+    result.b5 = b.b4;
+    result.b4 = b.b3;
+    result.b3 = b.b2;
+    result.b2 = b.b1;
+    result.b1 = b.b0;
+    result.b0 = new_bit;
+
+    return result;
 }
 
 struct bits8 bits8_add (struct bits8 x, struct bits8 y) {
@@ -147,24 +175,26 @@ struct bits8 bits8_negate(struct bits8 x) {
 }
 
 struct bits8 bits8_mul(struct bits8 x, struct bits8 y) {
-    struct bits8 result; // instantiate result bits8
-    //Der skal være en formatering som ca. ligner: 
-    //result = bits8_and_bit(x,y.b0);
-    //x1 = bits8_leftshift(x);
-    //result = bits8_add(result, bits8_and_bit( x1 ,y.b1));
-    //x2 = bits8_leftshift(x1);
-    //result = bits8_add(result, bits8_and_bit( x2 ,y.b2));
-    //osv. dernedaf
+    struct bits8 result;
 
+    // instantiate result bits8
+    // Der skal være en formatering som ca. ligner: 
+    result = bits8_and_bit(x, y.b0);
+    struct bits8 x1 = bits8_leftshift(x);
+    result = bits8_add(result, bits8_and_bit(x1 ,y.b1));
+    struct bits8 x2 = bits8_leftshift(x1);
+    result = bits8_add(result, bits8_and_bit(x2 ,y.b2));
+    struct bits8 x3 = bits8_leftshift(x2);
+    result = bits8_add(result, bits8_and_bit(x3 ,y.b3));
+    struct bits8 x4 = bits8_leftshift(x3);
+    result = bits8_add(result, bits8_and_bit(x4 ,y.b4));
+    struct bits8 x5 = bits8_leftshift(x4);
+    result = bits8_add(result, bits8_and_bit(x5, y.b5));
+    struct bits8 x6 = bits8_leftshift(x5);
+    result = bits8_add(result, bits8_and_bit(x6, y.b6));
+    struct bits8 x7 = bits8_leftshift(x6);
+    result = bits8_add(result, bits8_and_bit(x7, y.b7));
 
-    result = bits8_and_bit(x,y.b0);
-    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,1) ,y.b1));
-    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,2) ,y.b2));
-    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,3) ,y.b3));
-    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,4) ,y.b4));
-    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,5) ,y.b5));
-    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,6) ,y.b6));
-    result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,7) ,y.b7));
     return result;
 }
 
