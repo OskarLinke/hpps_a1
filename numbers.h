@@ -28,7 +28,7 @@ unsigned int bits8_to_int(struct bits8 x){
 
 void bits8_print(struct bits8 v){ 
     //Kalder for hver bit i bits8 bit_to_int fra bits.h, som returnerer 1 hvis den er true, og 0 hvis den er false. 
-    printf("<""%d""%d""%d""%d""%d""%d""%d""%d"">\n", bit_to_int(v.b7), bit_to_int(v.b6), bit_to_int(v.b5), bit_to_int(v.b4), bit_to_int(v.b3), bit_to_int(v.b2), bit_to_int(v.b1), bit_to_int(v.b0));
+    printf("<%d%d%d%d%d%d%d%d>\n", bit_to_int(v.b7), bit_to_int(v.b6), bit_to_int(v.b5), bit_to_int(v.b4), bit_to_int(v.b3), bit_to_int(v.b2), bit_to_int(v.b1), bit_to_int(v.b0));
 };
 
 
