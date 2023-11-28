@@ -86,6 +86,7 @@ struct bits8 bits8_and_bit(struct bits8 x, struct bit b){
 }
 
 //Leftshifts the bits8 by however much a is
+//Skal ændres så den altid leftshifter med 1, og skal ikke regne om til integers. 
 struct bits8 bits8_leftshit(struct bits8 b, unsigned int a){
     assert(a < 8); 
     
@@ -147,6 +148,14 @@ struct bits8 bits8_negate(struct bits8 x) {
 
 struct bits8 bits8_mul(struct bits8 x, struct bits8 y) {
     struct bits8 result; // instantiate result bits8
+    //Der skal være en formatering som ca. ligner: 
+    //result = bits8_and_bit(x,y.b0);
+    //x1 = bits8_leftshift(x);
+    //result = bits8_add(result, bits8_and_bit( x1 ,y.b1));
+    //x2 = bits8_leftshift(x1);
+    //result = bits8_add(result, bits8_and_bit( x2 ,y.b2));
+    //osv. dernedaf
+
 
     result = bits8_and_bit(x,y.b0);
     result = bits8_add(result, bits8_and_bit( bits8_leftshit(x,1) ,y.b1));
